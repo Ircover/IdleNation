@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Idle Nation</string>
+    <string name="work_place_food_1">first</string>
+    <string name="work_place_food_2">second</string>
+    <string name="work_place_food_3">third</string>
+    <string name="food">Food</string>
+</resources>
