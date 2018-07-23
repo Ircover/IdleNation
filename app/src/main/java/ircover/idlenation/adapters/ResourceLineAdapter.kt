@@ -37,13 +37,13 @@ class ResourceLineHolder(context: Context, parent: ViewGroup?) :
 class ResourceLineAdapter(private val context: Context) : RecyclerView.Adapter<ResourceLineHolder>() {
     private var items: Array<WorkPlaceModel> = arrayOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ResourceLineHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResourceLineHolder =
             ResourceLineHolder(context, parent)
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: ResourceLineHolder?, position: Int) {
-        holder?.setBinding(items[position])
+    override fun onBindViewHolder(holder: ResourceLineHolder, position: Int) {
+        holder.setBinding(items[position])
     }
 
     fun setItems(workPlaces: Array<WorkPlaceModel>) {

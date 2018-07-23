@@ -24,7 +24,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.tlMain.setupWithViewPager(binding.viewPager)
         viewModel.observeResourceLines(this) { resourceLines ->
             pagerAdapter.resourceLines = resourceLines
             pagerAdapter.processTabs(binding.tlMain)

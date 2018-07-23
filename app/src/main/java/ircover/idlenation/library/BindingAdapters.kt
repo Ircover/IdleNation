@@ -28,3 +28,8 @@ fun setDividerDecorator(recyclerView: RecyclerView, @ColorRes dividerColor: Int)
 fun setImageResource(imageView: ImageView, resource: Int) {
     imageView.setImageResource(resource)
 }
+
+@BindingAdapter("android:bindWithPager")
+fun bindViewPagerTabs(view: TabLayout, pagerView: ViewPager) {
+    view.setupWithViewPager(pagerView, true)
+}

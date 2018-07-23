@@ -29,15 +29,12 @@ abstract class ResourceLinePageFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            if(inflater != null) {
-                binding = DataBindingUtil.inflate(inflater,
-                        R.layout.fragment_resource_line_page, container, false)
-                linkBindingWithPage()
-                binding?.root
-            } else {
-                null
-            }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_resource_line_page, container, false)
+        linkBindingWithPage()
+        return binding?.root
+    }
 
     private fun linkBindingWithPage() {
         binding?.resourceLineModel = model
