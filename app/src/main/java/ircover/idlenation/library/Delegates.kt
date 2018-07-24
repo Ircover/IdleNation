@@ -7,13 +7,13 @@ import android.support.annotation.LayoutRes
 import kotlin.reflect.KProperty
 
 class ActivityBinding<in TClass : Activity, out TBinding : ViewDataBinding>
-(@LayoutRes private val layoutResIdGetter: () -> Int) {
+(@LayoutRes private val layoutResId: Int) {
 
     private var value: TBinding? = null
 
     operator fun getValue(thisRef: TClass, property: KProperty<*>): TBinding {
-        value = value ?: DataBindingUtil.setContentView(thisRef, layoutResIdGetter())
-        return value!!
+        return value ?: DataBindingUtil.setContentView<TBinding>(thisRef, layoutResId)
+                .apply { value = this }
     }
 
 }

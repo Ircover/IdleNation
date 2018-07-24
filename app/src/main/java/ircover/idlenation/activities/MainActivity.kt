@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override val viewModelClass = MainViewModel::class.java
 
-    override val contentResId = R.layout.activity_main
+    override val contentResId get() = R.layout.activity_main
     private lateinit var pagerAdapter: MainActivityPagerAdapter
 
     override fun initBinding(binding: ActivityMainBinding) {

@@ -1,6 +1,5 @@
 package ircover.idlenation.fragments
 
-import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,6 +11,7 @@ import ircover.idlenation.R
 import ircover.idlenation.ResourceType
 import ircover.idlenation.activities.viewModels.MainViewModel
 import ircover.idlenation.databinding.FragmentResourceLinePageBinding
+import ircover.idlenation.library.commonFunctions.getViewModel
 
 abstract class ResourceLinePageFragment : Fragment() {
     private var binding: FragmentResourceLinePageBinding? = null
@@ -21,10 +21,10 @@ abstract class ResourceLinePageFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as? AppCompatActivity)?.let { activity ->
-            ViewModelProviders.of(activity).get(MainViewModel::class.java)
+            activity.getViewModel<MainViewModel>()
                     .observeResourceLines(activity) {
                         model.resourceLine = it.find { it.resourceType == resourceType }
-                        linkBindingWithPage()
+                        linkBindingWithModel()
                     }
         }
     }
@@ -32,11 +32,11 @@ abstract class ResourceLinePageFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_resource_line_page, container, false)
-        linkBindingWithPage()
+        linkBindingWithModel()
         return binding?.root
     }
 
-    private fun linkBindingWithPage() {
+    private fun linkBindingWithModel() {
         binding?.resourceLineModel = model
     }
 
