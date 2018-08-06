@@ -3,7 +3,6 @@ package ircover.idlenation.fragments
 import android.content.Context
 import ircover.idlenation.ResourceLine
 import ircover.idlenation.adapters.ResourceLineAdapter
-import ircover.idlenation.adapters.WorkPlaceModel
 
 class ResourceLineModel(contextGetter: () -> Context?) {
     var resourceLine: ResourceLine? = null
@@ -22,5 +21,9 @@ class ResourceLineModel(contextGetter: () -> Context?) {
                     .toTypedArray()
             adapter?.setItems(newItems)
         }
+    }
+
+    fun onInformationPanelClose() {
+        adapter?.closeDetailsView()
     }
 }

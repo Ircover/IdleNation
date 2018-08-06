@@ -6,7 +6,9 @@ import android.support.design.widget.TabLayout
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.widget.ImageView
+import ircover.idlenation.adapters.ResourceLineAdapter
 import ircover.idlenation.itemDecorators.DividerItemDecorator
 
 @BindingAdapter("android:adapter")
@@ -32,4 +34,9 @@ fun setImageResource(imageView: ImageView, resource: Int) {
 @BindingAdapter("android:bindWithPager")
 fun bindViewPagerTabs(view: TabLayout, pagerView: ViewPager) {
     view.setupWithViewPager(pagerView, true)
+}
+
+@BindingAdapter("android:showOnSelectInAdapter")
+fun setViewToShowOnSelect(view: View, adapter: ResourceLineAdapter?) {
+    adapter?.viewToShowDetails = view
 }
