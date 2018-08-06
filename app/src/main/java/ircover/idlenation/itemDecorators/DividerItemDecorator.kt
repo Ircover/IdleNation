@@ -11,7 +11,7 @@ import ircover.idlenation.R
 import ircover.idlenation.library.commonFunctions.getColorFromResource
 
 class DividerItemDecorator(context: Context,
-                           @ColorRes textColorResId: Int = R.color.TextCommonColor) : RecyclerView.ItemDecoration() {
+                           @ColorRes textColorResId: Int = R.color.TextCommon) : RecyclerView.ItemDecoration() {
 
     private val dividerPaint = Paint()
     init {

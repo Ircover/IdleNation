@@ -3,6 +3,9 @@
     <color name="colorPrimary">#1bcf03</color>
     <color name="colorPrimaryDark">#139602</color>
     <color name="colorAccent">#fc4c58</color>
-    <color name="DividerCommonColor">#027405</color>
-    <color name="TextCommonColor">#000000</color>
+    <color name="DividerCommon">#027405</color>
+    <color name="TextCommon">#000000</color>
+
+    <color name="Transparent">#00ffffff</color>
+    <color name="SelectedElementBackground">#d3fce0</color>
 </resources>

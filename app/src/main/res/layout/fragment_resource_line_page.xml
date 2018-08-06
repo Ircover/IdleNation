@@ -21,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:adapter="@{resourceLineModel.adapter}"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            android:dividerDecoratorColor="@{R.color.DividerCommonColor}"/>
+            android:dividerDecoratorColor="@{R.color.DividerCommon}"/>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/clMain"
@@ -31,7 +31,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/rvMain"
             app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone"
             android:showOnSelectInAdapter="@{resourceLineModel.adapter}">
 
             <ImageView
@@ -41,7 +40,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:padding="@dimen/PaddingImages"
-                android:onClick="@{() -> resourceLineModel.onInformationPanelClose()}"/>
+                android:onClick="@{() -> resourceLineModel.onInformationPanelClose()}" />
 
         </android.support.constraint.ConstraintLayout>
 

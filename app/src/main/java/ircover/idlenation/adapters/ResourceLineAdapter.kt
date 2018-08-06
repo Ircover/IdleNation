@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import ircover.idlenation.R
 import ircover.idlenation.databinding.ListElementWorkPlaceBinding
 import ircover.idlenation.library.BindingViewHolder
+import ircover.idlenation.library.commonFunctions.animateWidthChange
 import ircover.idlenation.toCommonString
 import org.apfloat.Apfloat
 
@@ -36,9 +37,21 @@ class ResourceLineHolder(context: Context, parent: ViewGroup?) :
 
 class ResourceLineAdapter(private val context: Context) : RecyclerView.Adapter<ResourceLineHolder>() {
     private var items: Array<WorkPlaceModel> = arrayOf()
+    var maxDetailsWidth = 0
     var viewToShowDetails: View? = null
+    set(value) {
+        field = value
+        maxDetailsWidth = value?.width ?: 0
+        value?.layoutParams?.width = 1
+    }
+    private var selectedPosition = -1
     private val onElementSelect: (Int) -> Unit = {
-        viewToShowDetails?.visibility = View.VISIBLE
+        if(selectedPosition >= 0) {
+            notifyItemChanged(selectedPosition)
+        }
+        selectedPosition = it
+        notifyItemChanged(it)
+        viewToShowDetails?.animateWidthChange(maxDetailsWidth)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResourceLineHolder =
@@ -48,6 +61,8 @@ class ResourceLineAdapter(private val context: Context) : RecyclerView.Adapter<R
 
     override fun onBindViewHolder(holder: ResourceLineHolder, position: Int) {
         holder.setBinding(items[position], position, onElementSelect)
+        holder.itemView.setBackgroundResource(if(position != selectedPosition)
+            R.color.Transparent else R.color.SelectedElementBackground)
     }
 
     fun setItems(workPlaces: Array<WorkPlaceModel>) {
@@ -56,6 +71,6 @@ class ResourceLineAdapter(private val context: Context) : RecyclerView.Adapter<R
     }
 
     fun closeDetailsView() {
-        viewToShowDetails?.visibility = View.GONE
+        viewToShowDetails?.animateWidthChange(1)
     }
 }
