@@ -35,9 +35,11 @@ class ResourceLineHolder(context: Context, parent: ViewGroup?) :
     }
 }
 
+private val PAYLOAD_BACKGROUND = Any()
+
 class ResourceLineAdapter(private val context: Context) : RecyclerView.Adapter<ResourceLineHolder>() {
     private var items: Array<WorkPlaceModel> = arrayOf()
-    var maxDetailsWidth = 0
+    private var maxDetailsWidth = 0
     var viewToShowDetails: View? = null
     set(value) {
         field = value
@@ -47,10 +49,10 @@ class ResourceLineAdapter(private val context: Context) : RecyclerView.Adapter<R
     private var selectedPosition = -1
     private val onElementSelect: (Int) -> Unit = {
         if(selectedPosition >= 0) {
-            notifyItemChanged(selectedPosition)
+            notifyItemChanged(selectedPosition, PAYLOAD_BACKGROUND)
         }
         selectedPosition = it
-        notifyItemChanged(it)
+        notifyItemChanged(it, PAYLOAD_BACKGROUND)
         viewToShowDetails?.animateWidthChange(maxDetailsWidth)
     }
 
@@ -59,9 +61,21 @@ class ResourceLineAdapter(private val context: Context) : RecyclerView.Adapter<R
 
     override fun getItemCount(): Int = items.size
 
+    override fun onBindViewHolder(holder: ResourceLineHolder, position: Int, payloads: MutableList<Any>) {
+        if(payloads.contains(PAYLOAD_BACKGROUND)) {
+            holder.refreshBackground(position)
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
+    }
+
     override fun onBindViewHolder(holder: ResourceLineHolder, position: Int) {
         holder.setBinding(items[position], position, onElementSelect)
-        holder.itemView.setBackgroundResource(if(position != selectedPosition)
+        holder.refreshBackground(position)
+    }
+
+    private fun ResourceLineHolder.refreshBackground(position: Int) {
+        itemView.setBackgroundResource(if(position != selectedPosition)
             R.color.Transparent else R.color.SelectedElementBackground)
     }
 
@@ -71,6 +85,9 @@ class ResourceLineAdapter(private val context: Context) : RecyclerView.Adapter<R
     }
 
     fun closeDetailsView() {
+        val lastSelected = selectedPosition
+        selectedPosition = -1
+        notifyItemChanged(lastSelected, PAYLOAD_BACKGROUND)
         viewToShowDetails?.animateWidthChange(1)
     }
 }
