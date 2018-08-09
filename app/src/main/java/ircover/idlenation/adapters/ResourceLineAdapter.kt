@@ -8,7 +8,8 @@ import android.view.ViewGroup
 import ircover.idlenation.R
 import ircover.idlenation.databinding.ListElementWorkPlaceBinding
 import ircover.idlenation.library.BindingViewHolder
-import ircover.idlenation.library.commonFunctions.animateWidthChange
+import ircover.idlenation.library.commonFunctions.animateWidthChangeWithFading
+import ircover.idlenation.library.commonFunctions.getRealWidth
 import ircover.idlenation.toCommonString
 import org.apfloat.Apfloat
 
@@ -43,17 +44,22 @@ class ResourceLineAdapter(private val context: Context) : RecyclerView.Adapter<R
     var viewToShowDetails: View? = null
     set(value) {
         field = value
-        maxDetailsWidth = value?.width ?: 0
-        value?.layoutParams?.width = 1
+        value?.getRealWidth { width ->
+            maxDetailsWidth = width
+            value.layoutParams.width = 1
+            value.alpha = 0f
+        }
     }
     private var selectedPosition = -1
+    var onSelectListener: ((WorkPlaceModel) -> Unit)? = null
     private val onElementSelect: (Int) -> Unit = {
         if(selectedPosition >= 0) {
             notifyItemChanged(selectedPosition, PAYLOAD_BACKGROUND)
         }
         selectedPosition = it
-        notifyItemChanged(it, PAYLOAD_BACKGROUND)
-        viewToShowDetails?.animateWidthChange(maxDetailsWidth)
+        notifyItemChanged(selectedPosition, PAYLOAD_BACKGROUND)
+        viewToShowDetails?.animateWidthChangeWithFading(maxDetailsWidth, isFading = false)
+        onSelectListener?.invoke(items[selectedPosition])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResourceLineHolder =
@@ -88,6 +94,6 @@ class ResourceLineAdapter(private val context: Context) : RecyclerView.Adapter<R
         val lastSelected = selectedPosition
         selectedPosition = -1
         notifyItemChanged(lastSelected, PAYLOAD_BACKGROUND)
-        viewToShowDetails?.animateWidthChange(1)
+        viewToShowDetails?.animateWidthChangeWithFading(1, isFading = true)
     }
 }

@@ -22,10 +22,11 @@ abstract class ResourceLinePageFragment : Fragment() {
         super.onCreate(savedInstanceState)
         (activity as? AppCompatActivity)?.let { activity ->
             activity.getViewModel<MainViewModel>()
-                    .observeResourceLines(activity) {
-                        model.resourceLine = it.find { it.resourceType == resourceType }
+                    .observeResourceLines(activity) { resourceLines ->
+                        model.resourceLine = resourceLines.find { it.resourceType == resourceType }
                         linkBindingWithModel()
                     }
+            model.onWorkPlaceSelect = { binding?.workPlaceModel = it }
         }
     }
 

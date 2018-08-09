@@ -3,14 +3,22 @@ package ircover.idlenation.fragments
 import android.content.Context
 import ircover.idlenation.ResourceLine
 import ircover.idlenation.adapters.ResourceLineAdapter
+import ircover.idlenation.adapters.WorkPlaceModel
 
 class ResourceLineModel(contextGetter: () -> Context?) {
+    var onWorkPlaceSelect: ((WorkPlaceModel) -> Unit)? = null
     var resourceLine: ResourceLine? = null
     set(value) {
         field = value
         refreshAdapterItems()
     }
-    val adapter: ResourceLineAdapter? by lazy { contextGetter()?.let { ResourceLineAdapter(it) } }
+    val adapter: ResourceLineAdapter? by lazy {
+        contextGetter()?.let { context ->
+            ResourceLineAdapter(context).apply {
+                onSelectListener = { onWorkPlaceSelect?.invoke(it) }
+            }
+        }
+    }
 
     private fun refreshAdapterItems() {
         resourceLine?.let { line ->
