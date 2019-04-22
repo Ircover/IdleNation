@@ -1,4 +1,4 @@
-package ircover.idlenation.library
+package ircover.idlenation.utils
 
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy

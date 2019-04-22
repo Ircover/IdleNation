@@ -5,7 +5,7 @@ import ircover.idlenation.activities.viewModels.MainViewModel
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
-import ircover.idlenation.library.InstantTaskExecutorExtension
+import ircover.idlenation.utils.InstantTaskExecutorExtension
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantTaskExecutorExtension::class)
