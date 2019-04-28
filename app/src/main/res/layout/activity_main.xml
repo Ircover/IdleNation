@@ -23,7 +23,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:tabGravity="fill"
             app:tabMode="fixed"
-            android:bindWithPager="@{(viewPager)}"/>
+            android:viewPager="@{(viewPager)}"
+            android:adapter="@{pagerAdapter}"
+            android:customTitles="@{model.tabProcessor}"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"

@@ -8,7 +8,8 @@ import android.support.v4.app.FragmentActivity
 import android.view.LayoutInflater
 import android.view.View
 
-fun Context.getLayoutInflater() = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+fun Context.getLayoutInflater(): LayoutInflater = LayoutInflater.from(this)
+fun View.getLayoutInflater() = context.getLayoutInflater()
 @Suppress("DEPRECATION")
 fun Context.getColorFromResource(@ColorRes colorId: Int) = resources.getColor(colorId)
 inline fun <reified T: ViewModel> FragmentActivity.getViewModel() =

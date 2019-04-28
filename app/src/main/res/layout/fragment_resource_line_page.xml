@@ -5,7 +5,7 @@
         <import type="ircover.idlenation.R" />
         <variable
             name="resourceLineModel"
-            type="ircover.idlenation.fragments.ResourceLineModel" />
+            type="ircover.idlenation.fragments.model.ResourceLineModel" />
         <variable
             name="workPlaceModel"
             type="ircover.idlenation.adapters.WorkPlaceModel" />

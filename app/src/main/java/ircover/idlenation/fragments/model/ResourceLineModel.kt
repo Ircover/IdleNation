@@ -1,4 +1,4 @@
-package ircover.idlenation.fragments
+package ircover.idlenation.fragments.model
 
 import android.content.Context
 import ircover.idlenation.ResourceLine

@@ -1,4 +1,4 @@
-package ircover.idlenation.itemDecorators
+package ircover.idlenation.itemdecorators
 
 import android.content.Context
 import android.graphics.Canvas

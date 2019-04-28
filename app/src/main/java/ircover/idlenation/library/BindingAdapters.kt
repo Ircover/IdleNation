@@ -9,11 +9,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import ircover.idlenation.adapters.ResourceLineAdapter
-import ircover.idlenation.itemDecorators.DividerItemDecorator
+import ircover.idlenation.itemdecorators.DividerItemDecorator
+
+interface TabLayoutTitleProcessor {
+    fun process(parent: TabLayout, tab: TabLayout.Tab, position: Int)
+}
 
 @BindingAdapter("android:adapter")
-fun setAdapter(viewPager: ViewPager, pagerAdapter: PagerAdapter) {
-    viewPager.adapter = pagerAdapter
+fun setAdapter(viewPager: ViewPager, pagerAdapter: PagerAdapter?) {
+    if(pagerAdapter != null) {
+        viewPager.adapter = pagerAdapter
+    }
 }
 
 @BindingAdapter("android:adapter")
@@ -32,11 +38,29 @@ fun setImageResource(imageView: ImageView, resource: Int) {
 }
 
 @BindingAdapter("android:bindWithPager")
-fun bindViewPagerTabs(view: TabLayout, pagerView: ViewPager) {
+fun bindViewPagerTabs(view: TabLayout, pagerView: ViewPager?) {
     view.setupWithViewPager(pagerView, true)
 }
 
 @BindingAdapter("android:showOnSelectInAdapter")
 fun setViewToShowOnSelect(view: View, adapter: ResourceLineAdapter?) {
     adapter?.viewToShowDetails = view
+}
+
+@BindingAdapter("android:viewPager", "android:customTitles", "android:adapter")
+fun setCustomTitles(tabLayout: TabLayout,
+                    viewPager: ViewPager?,
+                    titlesProcessor: TabLayoutTitleProcessor?,
+                    adapter: PagerAdapter?) {
+    if(viewPager != null) {
+        setAdapter(viewPager, adapter)
+    }
+    bindViewPagerTabs(tabLayout, viewPager)
+    if(titlesProcessor != null) {
+        for (i in 0 until tabLayout.tabCount) {
+            tabLayout.getTabAt(i)?.let { tab ->
+                titlesProcessor.process(tabLayout, tab, i)
+            }
+        }
+    }
 }

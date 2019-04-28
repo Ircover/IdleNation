@@ -1,5 +1,7 @@
 package ircover.idlenation.library
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.ViewDataBinding
 import android.os.Bundle
@@ -32,4 +34,8 @@ abstract class BaseActivity<TBinding : ViewDataBinding, TModel : BaseViewModel<*
     private fun getViewModelFromProvider(): TModel = ViewModelProviders.of(this).get(viewModelClass)
 
     abstract fun initBinding(binding: TBinding)
+
+    protected fun <T> LiveData<T>.observe(observer: (T) -> Unit) {
+        observe(this@BaseActivity, Observer { it?.let(observer) })
+    }
 }
