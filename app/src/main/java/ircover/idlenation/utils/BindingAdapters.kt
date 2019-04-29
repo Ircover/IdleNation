@@ -1,4 +1,4 @@
-package ircover.idlenation.library
+package ircover.idlenation.utils
 
 import android.databinding.BindingAdapter
 import android.support.annotation.ColorRes

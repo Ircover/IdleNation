@@ -1,6 +1,6 @@
 package ircover.idlenation
 
-import ircover.idlenation.library.times
+import ircover.idlenation.utils.times
 import org.apfloat.Apfloat
 import org.apfloat.ApfloatMath
 import java.util.*

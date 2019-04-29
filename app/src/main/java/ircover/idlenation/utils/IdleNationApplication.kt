@@ -1,4 +1,4 @@
-package ircover.idlenation.library
+package ircover.idlenation.utils
 
 import android.annotation.SuppressLint
 import android.app.Application

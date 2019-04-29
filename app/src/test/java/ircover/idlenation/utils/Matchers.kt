@@ -3,8 +3,6 @@ package ircover.idlenation.utils
 import com.natpryce.hamkrest.MatchResult
 import com.natpryce.hamkrest.Matcher
 import ircover.idlenation.createApfloat
-import ircover.idlenation.library.minus
-import ircover.idlenation.library.times
 import org.apfloat.Apfloat
 import org.apfloat.ApfloatMath
 import kotlin.math.absoluteValue

@@ -1,4 +1,4 @@
-package ircover.idlenation.library.commonFunctions
+package ircover.idlenation.utils.commonFunctions
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders

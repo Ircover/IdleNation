@@ -4,15 +4,15 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
 import android.databinding.DataBindingUtil
 import android.support.design.widget.TabLayout
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import ircover.idlenation.*
 import ircover.idlenation.databinding.ViewPageTitleBinding
 import ircover.idlenation.game.ResourceLinesProvider
-import ircover.idlenation.library.BaseViewModel
-import ircover.idlenation.library.CalculatingObservableField
-import ircover.idlenation.library.TabLayoutTitleProcessor
-import ircover.idlenation.library.commonFunctions.getLayoutInflater
+import ircover.idlenation.utils.BaseViewModel
+import ircover.idlenation.utils.CalculatingObservableField
+import ircover.idlenation.utils.TabLayoutTitleProcessor
+import ircover.idlenation.utils.commonFunctions.getLayoutInflater
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 open class MainActivityModel {
     val resourceLines: Array<ResourceLine> = ResourceLinesProvider.ResourceLines
@@ -53,19 +53,17 @@ class MainViewModel(mainActivityModel: MainActivityModel) : BaseViewModel<MainAc
     private var isCalculating = false
 
     fun calculateProduce() {
-        Observable.just(Unit)
-                .subscribeOn(Schedulers.computation())
-                .subscribe {
+        GlobalScope.launch {
+            if(!isCalculating) {
+                synchronized(this@MainViewModel) {
                     if(!isCalculating) {
-                        synchronized(this@MainViewModel) {
-                            if(!isCalculating) {
-                                isCalculating = true
-                                getValue()?.calculateProduce()
-                                isCalculating = false
-                            }
-                        }
+                        isCalculating = true
+                        getValue()?.calculateProduce()
+                        isCalculating = false
                     }
                 }
+            }
+        }
     }
 
     fun findResourceLine(resourceType: ResourceType): LiveData<ResourceLine>

@@ -1,4 +1,4 @@
-package ircover.idlenation.library
+package ircover.idlenation.utils
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer

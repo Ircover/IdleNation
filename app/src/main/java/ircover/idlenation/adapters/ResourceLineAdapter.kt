@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import ircover.idlenation.R
 import ircover.idlenation.databinding.ListElementWorkPlaceBinding
-import ircover.idlenation.library.BindingViewHolder
-import ircover.idlenation.library.commonFunctions.animateWidthChangeWithFading
-import ircover.idlenation.library.commonFunctions.getRealWidth
+import ircover.idlenation.utils.BindingViewHolder
+import ircover.idlenation.utils.commonFunctions.animateWidthChangeWithFading
+import ircover.idlenation.utils.commonFunctions.getRealWidth
 import ircover.idlenation.toCommonString
 import org.apfloat.Apfloat
 

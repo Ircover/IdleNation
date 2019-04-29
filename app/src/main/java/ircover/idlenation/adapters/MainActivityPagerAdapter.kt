@@ -4,7 +4,7 @@ import android.databinding.ObservableField
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
 import ircover.idlenation.*
-import ircover.idlenation.library.BaseActivity
+import ircover.idlenation.utils.BaseActivity
 import org.apfloat.Apfloat
 
 class PageTitleModel(startCount: Apfloat, resourceType: ResourceType) {

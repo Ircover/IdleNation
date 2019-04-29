@@ -1,9 +1,9 @@
-package ircover.idlenation.library.commonFunctions
+package ircover.idlenation.utils.commonFunctions
 
 import android.animation.ValueAnimator
 import android.view.View
 import ircover.idlenation.R
-import ircover.idlenation.library.IdleNationApplication
+import ircover.idlenation.utils.IdleNationApplication
 
 fun View.animateWidthChangeWithFading(widthEnd: Int, isFading: Boolean) {
     val widthStart = width

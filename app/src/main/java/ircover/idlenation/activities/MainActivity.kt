@@ -1,13 +1,11 @@
 package ircover.idlenation.activities
 
 import android.os.Bundle
-import io.reactivex.Observable
 import ircover.idlenation.R
 import ircover.idlenation.activities.viewModels.MainViewModel
 import ircover.idlenation.adapters.MainActivityPagerAdapter
 import ircover.idlenation.databinding.ActivityMainBinding
-import ircover.idlenation.library.BaseActivity
-import java.util.concurrent.TimeUnit
+import ircover.idlenation.utils.BaseActivity
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override val viewModelClass = MainViewModel::class.java
@@ -28,13 +26,16 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             pagerAdapter.pages = menuPages
             viewModel.notifyPagesViewed()
         }
+        viewModel.uiTimerData.observe {
+            viewModel.calculateProduce()
+        }
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
-        addUiSubscription(Observable.interval(16L, TimeUnit.MILLISECONDS)
+        addUiSubscription(.interval(16L, TimeUnit.MILLISECONDS)
                 .subscribe {
                     viewModel.calculateProduce()
                 })
-    }
+    }*/
 }

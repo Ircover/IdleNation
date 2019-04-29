@@ -2,7 +2,7 @@ package ircover.idlenation
 
 import ircover.idlenation.adapters.WorkPlaceModel
 import ircover.idlenation.adapters.update
-import ircover.idlenation.library.plus
+import ircover.idlenation.utils.plus
 import org.apfloat.Apfloat
 
 abstract class ResourceLine(val resourceType: ResourceType) {

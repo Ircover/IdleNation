@@ -1,6 +1,6 @@
 package ircover.idlenation
 
-import ircover.idlenation.library.IdleNationApplication
+import ircover.idlenation.utils.IdleNationApplication
 
 enum class ResourceType {
     Food;

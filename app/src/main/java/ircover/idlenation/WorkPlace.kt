@@ -3,8 +3,8 @@ package ircover.idlenation
 import ircover.idlenation.adapters.WorkPlaceModel
 import ircover.idlenation.adapters.update
 import ircover.idlenation.game.BonusWorker
-import ircover.idlenation.library.plus
-import ircover.idlenation.library.times
+import ircover.idlenation.utils.plus
+import ircover.idlenation.utils.times
 import org.apfloat.Apfloat
 
 class WorkPlace(private val id: Int,

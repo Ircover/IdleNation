@@ -6,8 +6,8 @@ import ircover.idlenation.ResourceType
 import ircover.idlenation.activities.viewModels.MainViewModel
 import ircover.idlenation.databinding.FragmentResourceLinePageBinding
 import ircover.idlenation.fragments.model.ResourceLineModel
-import ircover.idlenation.library.BaseFragment
-import ircover.idlenation.library.commonFunctions.getViewModel
+import ircover.idlenation.utils.BaseFragment
+import ircover.idlenation.utils.commonFunctions.getViewModel
 
 abstract class ResourceLinePageFragment : BaseFragment<FragmentResourceLinePageBinding>() {
     override val layoutResId = R.layout.fragment_resource_line_page

@@ -2,7 +2,6 @@ package ircover.idlenation
 
 import com.natpryce.hamkrest.assertion.assertThat
 import ircover.idlenation.game.BonusWorker
-import ircover.idlenation.library.*
 import ircover.idlenation.utils.Is
 import ircover.idlenation.utils.equalTo
 import ircover.idlenation.utils.nearlyEqualTo
