@@ -1,6 +1,5 @@
 package ircover.idlenation.game
 
-import ircover.idlenation.ResourceType
 import ircover.idlenation.createApfloat
 import org.apfloat.Apfloat
 

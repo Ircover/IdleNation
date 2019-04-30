@@ -1,7 +1,7 @@
 package ircover.idlenation.fragments.model
 
 import android.content.Context
-import ircover.idlenation.ResourceLine
+import ircover.idlenation.game.ResourceLine
 import ircover.idlenation.adapters.ResourceLineAdapter
 import ircover.idlenation.adapters.WorkPlaceModel
 

@@ -19,7 +19,8 @@ abstract class BaseActivity<TBinding : ViewDataBinding, TModel : BaseViewModel<*
         initBinding(binding)
     }
 
-    private fun getViewModelFromProvider(): TModel = ViewModelProviders.of(this).get(viewModelClass)
+    private fun getViewModelFromProvider(): TModel =
+            ViewModelProviders.of(this).get(viewModelClass)
 
     abstract fun initBinding(binding: TBinding)
 

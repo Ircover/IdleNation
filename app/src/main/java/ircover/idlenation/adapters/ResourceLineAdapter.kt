@@ -7,25 +7,32 @@ import android.view.View
 import android.view.ViewGroup
 import ircover.idlenation.R
 import ircover.idlenation.databinding.ListElementWorkPlaceBinding
+import ircover.idlenation.game.CountChangeObservable
+import ircover.idlenation.game.registerCountChangeListener
 import ircover.idlenation.utils.BindingViewHolder
 import ircover.idlenation.utils.commonFunctions.animateWidthChangeWithFading
 import ircover.idlenation.utils.commonFunctions.getRealWidth
 import ircover.idlenation.toCommonString
+import ircover.idlenation.utils.Disposable
 import org.apfloat.Apfloat
 
 class WorkPlaceModel(val name: String,
-                     var count: Apfloat) {
+                     startCount: Apfloat) {
+    var count: Apfloat = startCount
+        set(value) {
+            field = value
+            countString.notifyChange()
+        }
     val countString = object : ObservableField<String>() {
         override fun get() = count.toCommonString()
     }
-    fun getUpdater(): ((WorkPlaceModel) -> Unit) -> Unit = {
-        it(this)
-        countString.notifyChange()
-    }
-}
+    private var listenerDisposable: Disposable? = null
 
-fun (((WorkPlaceModel) -> Unit) -> Unit).update(newCount: Apfloat) {
-    invoke { it.count = newCount }
+    fun registerCountChangeObserver(countChangeObservable: CountChangeObservable) {
+        listenerDisposable = countChangeObservable.registerCountChangeListener { newCount ->
+            count = newCount
+        }
+    }
 }
 
 class ResourceLineHolder(context: Context, parent: ViewGroup?) :

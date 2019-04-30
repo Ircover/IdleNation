@@ -27,15 +27,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             viewModel.notifyPagesViewed()
         }
         viewModel.uiTimerData.observe {
-            viewModel.calculateProduce()
+            viewModel.calculateProduce().start()
         }
     }
-
-    /*override fun onResume() {
-        super.onResume()
-        addUiSubscription(.interval(16L, TimeUnit.MILLISECONDS)
-                .subscribe {
-                    viewModel.calculateProduce()
-                })
-    }*/
 }

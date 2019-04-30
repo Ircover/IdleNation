@@ -6,13 +6,15 @@ import android.databinding.DataBindingUtil
 import android.support.design.widget.TabLayout
 import ircover.idlenation.*
 import ircover.idlenation.databinding.ViewPageTitleBinding
+import ircover.idlenation.game.ResourceLine
 import ircover.idlenation.game.ResourceLinesProvider
+import ircover.idlenation.game.ResourceType
 import ircover.idlenation.utils.BaseViewModel
 import ircover.idlenation.utils.CalculatingObservableField
 import ircover.idlenation.utils.TabLayoutTitleProcessor
 import ircover.idlenation.utils.commonFunctions.getLayoutInflater
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
 
 open class MainActivityModel {
     val resourceLines: Array<ResourceLine> = ResourceLinesProvider.ResourceLines
@@ -27,6 +29,7 @@ open class MainActivityModel {
 }
 
 class MainViewModel(mainActivityModel: MainActivityModel) : BaseViewModel<MainActivityModel>() {
+    @Suppress("unused")
     constructor() : this(MainActivityModel())
     val resourceLinesData: LiveData<Array<ResourceLine>> = Transformations.map(liveData) {
         it.resourceLines
@@ -52,15 +55,13 @@ class MainViewModel(mainActivityModel: MainActivityModel) : BaseViewModel<MainAc
     }
     private var isCalculating = false
 
-    fun calculateProduce() {
-        GlobalScope.launch {
-            if(!isCalculating) {
-                synchronized(this@MainViewModel) {
-                    if(!isCalculating) {
-                        isCalculating = true
-                        getValue()?.calculateProduce()
-                        isCalculating = false
-                    }
+    fun calculateProduce() = GlobalScope.async {
+        if(!isCalculating) {
+            synchronized(this@MainViewModel) {
+                if(!isCalculating) {
+                    isCalculating = true
+                    getValue()?.calculateProduce()
+                    isCalculating = false
                 }
             }
         }

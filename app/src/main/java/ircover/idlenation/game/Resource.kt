@@ -1,5 +1,6 @@
-package ircover.idlenation
+package ircover.idlenation.game
 
+import ircover.idlenation.R
 import ircover.idlenation.utils.IdleNationApplication
 
 enum class ResourceType {

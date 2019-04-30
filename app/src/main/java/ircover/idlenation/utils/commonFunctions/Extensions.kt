@@ -1,4 +1,4 @@
-package ircover.idlenation.utils
+package ircover.idlenation.utils.commonFunctions
 
 import ircover.idlenation.COMMON_PRECISION
 import org.apfloat.Apfloat

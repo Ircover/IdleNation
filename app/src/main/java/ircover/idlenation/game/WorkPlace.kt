@@ -1,20 +1,19 @@
-package ircover.idlenation
+package ircover.idlenation.game
 
 import ircover.idlenation.adapters.WorkPlaceModel
-import ircover.idlenation.adapters.update
-import ircover.idlenation.game.BonusWorker
-import ircover.idlenation.utils.plus
-import ircover.idlenation.utils.times
+import ircover.idlenation.createApfloat
+import ircover.idlenation.utils.commonFunctions.plus
+import ircover.idlenation.utils.commonFunctions.times
 import org.apfloat.Apfloat
 
 class WorkPlace(private val id: Int,
                 val name: String,
                 private val resourceType: ResourceType,
                 private val baseProductionPerSecond: Apfloat,
-                private val bonuses: BonusWorker) {
-    var count = createApfloat(0.0)
+                private val bonuses: BonusWorker): CountChangeObservable {
+    override var count = createApfloat(0.0)
         private set
-    private var lastCreatedModelUpdater: (((WorkPlaceModel) -> Unit) -> Unit)? = null
+    override val countChangeObservers: ArrayList<(Apfloat) -> Unit> = arrayListOf()
 
     fun getTotalProductionByTime(elapsedMillis: Long): Apfloat {
         val timeMultiplier = elapsedMillis.toDouble() / 1000
@@ -28,9 +27,11 @@ class WorkPlace(private val id: Int,
 
     fun addCount(count: Apfloat) {
         this.count += count
-        lastCreatedModelUpdater?.update(this.count)
+        notifyCountChangeListeners()
     }
 
     fun convertToModel(): WorkPlaceModel =
-            WorkPlaceModel(name, count).apply { lastCreatedModelUpdater = getUpdater() }
+            WorkPlaceModel(name, count).also { model ->
+                model.registerCountChangeObserver(this)
+            }
 }

@@ -2,7 +2,7 @@ package ircover.idlenation.fragments
 
 import android.os.Bundle
 import ircover.idlenation.R
-import ircover.idlenation.ResourceType
+import ircover.idlenation.game.ResourceType
 import ircover.idlenation.activities.viewModels.MainViewModel
 import ircover.idlenation.databinding.FragmentResourceLinePageBinding
 import ircover.idlenation.fragments.model.ResourceLineModel
