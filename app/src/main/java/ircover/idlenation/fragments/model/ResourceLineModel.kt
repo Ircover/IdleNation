@@ -14,6 +14,10 @@ interface DetailsViewable {
 class ResourceLineModel : DetailsViewable {
     var onWorkPlaceSelect: ((WorkPlaceModel) -> Unit)? = null
     var resourceLine: ResourceLine? = null
+        set(value) {
+            field = value
+            refreshAdapterItems()
+        }
     override var viewToShowDetails: View? = null
         set(value) {
             field = value
@@ -24,10 +28,6 @@ class ResourceLineModel : DetailsViewable {
             }
         }
     private var maxDetailsWidth = 0
-    set(value) {
-        field = value
-        refreshAdapterItems()
-    }
     val adapter = ResourceLineAdapter().apply {
         onSelectListener = {
             onWorkPlaceSelect?.invoke(it)
