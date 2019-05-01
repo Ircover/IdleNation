@@ -8,7 +8,7 @@ import android.support.v4.view.ViewPager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
-import ircover.idlenation.adapters.ResourceLineAdapter
+import ircover.idlenation.fragments.model.DetailsViewable
 import ircover.idlenation.itemdecorators.DividerItemDecorator
 
 interface TabLayoutTitleProcessor {
@@ -42,9 +42,9 @@ fun bindViewPagerTabs(view: TabLayout, pagerView: ViewPager?) {
     view.setupWithViewPager(pagerView, true)
 }
 
-@BindingAdapter("android:showOnSelectInAdapter")
-fun setViewToShowOnSelect(view: View, adapter: ResourceLineAdapter?) {
-    adapter?.viewToShowDetails = view
+@BindingAdapter("android:showOnSelectIn")
+fun setViewToShowOnSelect(view: View, detailsViewable: DetailsViewable?) {
+    detailsViewable?.viewToShowDetails = view
 }
 
 @BindingAdapter("android:viewPager", "android:customTitles", "android:adapter")

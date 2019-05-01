@@ -11,7 +11,7 @@ import ircover.idlenation.utils.commonFunctions.getViewModel
 
 abstract class ResourceLinePageFragment : BaseFragment<FragmentResourceLinePageBinding>() {
     override val layoutResId = R.layout.fragment_resource_line_page
-    private val model = ResourceLineModel { activity }
+    private val model = ResourceLineModel()
     abstract val resourceType: ResourceType
 
     override fun onCreate(savedInstanceState: Bundle?) {

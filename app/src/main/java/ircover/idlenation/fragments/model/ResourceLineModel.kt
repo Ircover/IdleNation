@@ -1,22 +1,37 @@
 package ircover.idlenation.fragments.model
 
-import android.content.Context
+import android.view.View
 import ircover.idlenation.game.ResourceLine
 import ircover.idlenation.adapters.ResourceLineAdapter
 import ircover.idlenation.adapters.WorkPlaceModel
+import ircover.idlenation.utils.commonFunctions.animateWidthChangeWithFading
+import ircover.idlenation.utils.commonFunctions.getRealWidth
 
-class ResourceLineModel(contextGetter: () -> Context?) {
+interface DetailsViewable {
+    var viewToShowDetails: View?
+}
+
+class ResourceLineModel : DetailsViewable {
     var onWorkPlaceSelect: ((WorkPlaceModel) -> Unit)? = null
     var resourceLine: ResourceLine? = null
-    set(value) {
-        field = value
-        refreshAdapterItems()
-    }
-    val adapter: ResourceLineAdapter? by lazy {
-        contextGetter()?.let { context ->
-            ResourceLineAdapter(context).apply {
-                onSelectListener = { onWorkPlaceSelect?.invoke(it) }
+        set(value) {
+            field = value
+            refreshAdapterItems()
+        }
+    override var viewToShowDetails: View? = null
+        set(value) {
+            field = value
+            value?.getRealWidth { width ->
+                maxDetailsWidth = width
+                value.layoutParams.width = 1
+                value.alpha = 0f
             }
+        }
+    private var maxDetailsWidth = 0
+    val adapter = ResourceLineAdapter().apply {
+        onSelectListener = {
+            onWorkPlaceSelect?.invoke(it)
+            viewToShowDetails?.animateWidthChangeWithFading(maxDetailsWidth, isFading = false)
         }
     }
 
@@ -27,11 +42,12 @@ class ResourceLineModel(contextGetter: () -> Context?) {
                     .reversed()
                     .plus(line.createWorkPlaceModel())
                     .toTypedArray()
-            adapter?.setItems(newItems)
+            adapter.setItems(newItems)
         }
     }
 
     fun onInformationPanelClose() {
-        adapter?.closeDetailsView()
+        viewToShowDetails?.animateWidthChangeWithFading(1, isFading = true)
+        adapter.clearSelection()
     }
 }

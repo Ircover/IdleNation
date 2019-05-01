@@ -14,7 +14,9 @@ open class BindingViewHolder<TBinding : ViewDataBinding> : RecyclerView.ViewHold
     constructor(itemView: View) : super(itemView) {
         binding = DataBindingUtil.getBinding(itemView)
     }
-    constructor(context: Context, @LayoutRes layoutId: Int, parent: ViewGroup?) :
+    constructor(@LayoutRes layoutId: Int, parent: ViewGroup) :
+            this(parent.context, layoutId, parent)
+    constructor(context: Context, @LayoutRes layoutId: Int, parent: ViewGroup) :
             super(DataBindingUtil.inflate<TBinding>(
                     context.getLayoutInflater(),
                     layoutId, parent, false).root) {
