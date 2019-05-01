@@ -1,7 +1,7 @@
 package ircover.idlenation.game
 
 import ircover.idlenation.*
-import ircover.idlenation.library.IdleNationApplication
+import ircover.idlenation.utils.IdleNationApplication
 
 class ResourceLinesProvider {
     companion object {

@@ -2,6 +2,9 @@
 <resources>
     <dimen name="TextSizeMain">17sp</dimen>
     <dimen name="TextSizeSecondary">14sp</dimen>
+
     <dimen name="MarginCommon">10dp</dimen>
     <dimen name="MarginSmall">5dp</dimen>
+
+    <dimen name="PaddingImages">10dp</dimen>
 </resources>

@@ -1,4 +1,4 @@
-package ircover.idlenation
+package ircover.idlenation.game
 
 abstract class ResourceChain(resourceType: ResourceType) : ResourceLine(resourceType) {
     override fun produce(time: Long) {

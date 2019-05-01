@@ -1,45 +1,31 @@
 package ircover.idlenation.fragments
 
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import ircover.idlenation.R
-import ircover.idlenation.ResourceType
+import ircover.idlenation.game.ResourceType
 import ircover.idlenation.activities.viewModels.MainViewModel
 import ircover.idlenation.databinding.FragmentResourceLinePageBinding
+import ircover.idlenation.fragments.model.ResourceLineModel
+import ircover.idlenation.utils.BaseFragment
+import ircover.idlenation.utils.commonFunctions.getViewModel
 
-abstract class ResourceLinePageFragment : Fragment() {
-    private var binding: FragmentResourceLinePageBinding? = null
+abstract class ResourceLinePageFragment : BaseFragment<FragmentResourceLinePageBinding>() {
+    override val layoutResId = R.layout.fragment_resource_line_page
     private val model = ResourceLineModel { activity }
     abstract val resourceType: ResourceType
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as? AppCompatActivity)?.let { activity ->
-            ViewModelProviders.of(activity).get(MainViewModel::class.java)
-                    .observeResourceLines(activity) {
-                        model.resourceLine = it.find { it.resourceType == resourceType }
-                        linkBindingWithPage()
-                    }
-        }
+        activity?.getViewModel<MainViewModel>()
+                ?.findResourceLine(resourceType)
+                ?.observeIfAppCompat { resourceLine ->
+                    model.resourceLine = resourceLine
+                    linkBindingWithModel()
+                }
+        model.onWorkPlaceSelect = { binding?.workPlaceModel = it }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            if(inflater != null) {
-                binding = DataBindingUtil.inflate(inflater,
-                        R.layout.fragment_resource_line_page, container, false)
-                linkBindingWithPage()
-                binding?.root
-            } else {
-                null
-            }
-
-    private fun linkBindingWithPage() {
+    override fun linkBindingWithModel() {
         binding?.resourceLineModel = model
     }
 

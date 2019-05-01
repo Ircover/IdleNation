@@ -5,10 +5,15 @@
         <variable
             name="workPlace"
             type="ircover.idlenation.adapters.WorkPlaceModel" />
+        <variable
+            name="onClick"
+            type="Runnable" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:onClick="@{() -> onClick.run()}">
 
         <TextView
             android:layout_width="0dp"

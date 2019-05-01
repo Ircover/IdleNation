@@ -1,4 +1,4 @@
-package ircover.idlenation.library
+package ircover.idlenation.utils
 
 import com.natpryce.hamkrest.Matcher
 import kotlin.test.assertTrue

@@ -1,4 +1,4 @@
-package ircover.idlenation.library
+package ircover.idlenation.utils
 
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -7,7 +7,7 @@ import android.support.annotation.LayoutRes
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import ircover.idlenation.library.commonFunctions.getLayoutInflater
+import ircover.idlenation.utils.commonFunctions.getLayoutInflater
 
 open class BindingViewHolder<TBinding : ViewDataBinding> : RecyclerView.ViewHolder {
     protected val binding : TBinding?

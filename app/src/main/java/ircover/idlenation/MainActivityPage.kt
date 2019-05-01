@@ -3,6 +3,9 @@ package ircover.idlenation
 import android.support.v4.app.Fragment
 import ircover.idlenation.adapters.PageTitleModel
 import ircover.idlenation.fragments.ResourceLinePageFragment
+import ircover.idlenation.game.ResourceLine
+import ircover.idlenation.game.registerCountChangeListener
+import ircover.idlenation.utils.Disposable
 
 interface MainActivityPage {
     fun getTitle(): CharSequence
@@ -12,6 +15,8 @@ interface MainActivityPage {
 
 fun ResourceLine.convertToPage() = object : MainActivityPage {
     var fragment: ResourceLinePageFragment? = null
+    private var listenerDisposable: Disposable? = null
+
     override fun getTitle(): CharSequence =
             "${resourceType.getTitle()}: ${resourceCount.toCommonString()}"
 
@@ -23,6 +28,6 @@ fun ResourceLine.convertToPage() = object : MainActivityPage {
 
     override fun getPageTitleModel(): PageTitleModel =
             PageTitleModel(resourceCount, resourceType).apply {
-                registerOnCountUpdate { count = it }
+                listenerDisposable = registerCountChangeListener { count = it }
             }
 }

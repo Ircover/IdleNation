@@ -3,51 +3,104 @@ package ircover.idlenation.adapters
 import android.content.Context
 import android.databinding.ObservableField
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.view.ViewGroup
-import ircover.idlenation.PreferencesManager
 import ircover.idlenation.R
 import ircover.idlenation.databinding.ListElementWorkPlaceBinding
-import ircover.idlenation.library.BindingViewHolder
+import ircover.idlenation.game.CountChangeObservable
+import ircover.idlenation.game.registerCountChangeListener
+import ircover.idlenation.utils.BindingViewHolder
+import ircover.idlenation.utils.commonFunctions.animateWidthChangeWithFading
+import ircover.idlenation.utils.commonFunctions.getRealWidth
 import ircover.idlenation.toCommonString
-import ircover.idlenation.toString
+import ircover.idlenation.utils.Disposable
 import org.apfloat.Apfloat
 
 class WorkPlaceModel(val name: String,
-                     var count: Apfloat) {
+                     startCount: Apfloat) {
+    var count: Apfloat = startCount
+        set(value) {
+            field = value
+            countString.notifyChange()
+        }
     val countString = object : ObservableField<String>() {
         override fun get() = count.toCommonString()
     }
-    fun getUpdater(): ((WorkPlaceModel) -> Unit) -> Unit = {
-        it(this)
-        countString.notifyChange()
-    }
-}
+    private var listenerDisposable: Disposable? = null
 
-fun (((WorkPlaceModel) -> Unit) -> Unit).update(newCount: Apfloat) {
-    invoke { it.count = newCount }
+    fun registerCountChangeObserver(countChangeObservable: CountChangeObservable) {
+        listenerDisposable = countChangeObservable.registerCountChangeListener { newCount ->
+            count = newCount
+        }
+    }
 }
 
 class ResourceLineHolder(context: Context, parent: ViewGroup?) :
         BindingViewHolder<ListElementWorkPlaceBinding>(context, R.layout.list_element_work_place, parent) {
-    fun setBinding(workPlace: WorkPlaceModel) {
+    fun setBinding(workPlace: WorkPlaceModel, position: Int, onSelect: (Int) -> Unit) {
         binding?.workPlace = workPlace
+        binding?.onClick = Runnable { onSelect(position) }
     }
 }
 
+private val PAYLOAD_BACKGROUND = Any()
+
 class ResourceLineAdapter(private val context: Context) : RecyclerView.Adapter<ResourceLineHolder>() {
     private var items: Array<WorkPlaceModel> = arrayOf()
+    private var maxDetailsWidth = 0
+    var viewToShowDetails: View? = null
+    set(value) {
+        field = value
+        value?.getRealWidth { width ->
+            maxDetailsWidth = width
+            value.layoutParams.width = 1
+            value.alpha = 0f
+        }
+    }
+    private var selectedPosition = -1
+    var onSelectListener: ((WorkPlaceModel) -> Unit)? = null
+    private val onElementSelect: (Int) -> Unit = {
+        if(selectedPosition >= 0) {
+            notifyItemChanged(selectedPosition, PAYLOAD_BACKGROUND)
+        }
+        selectedPosition = it
+        notifyItemChanged(selectedPosition, PAYLOAD_BACKGROUND)
+        viewToShowDetails?.animateWidthChangeWithFading(maxDetailsWidth, isFading = false)
+        onSelectListener?.invoke(items[selectedPosition])
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ResourceLineHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResourceLineHolder =
             ResourceLineHolder(context, parent)
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: ResourceLineHolder?, position: Int) {
-        holder?.setBinding(items[position])
+    override fun onBindViewHolder(holder: ResourceLineHolder, position: Int, payloads: MutableList<Any>) {
+        if(payloads.contains(PAYLOAD_BACKGROUND)) {
+            holder.refreshBackground(position)
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
+    }
+
+    override fun onBindViewHolder(holder: ResourceLineHolder, position: Int) {
+        holder.setBinding(items[position], position, onElementSelect)
+        holder.refreshBackground(position)
+    }
+
+    private fun ResourceLineHolder.refreshBackground(position: Int) {
+        itemView.setBackgroundResource(if(position != selectedPosition)
+            R.color.Transparent else R.color.SelectedElementBackground)
     }
 
     fun setItems(workPlaces: Array<WorkPlaceModel>) {
         items = workPlaces
         notifyDataSetChanged()
+    }
+
+    fun closeDetailsView() {
+        val lastSelected = selectedPosition
+        selectedPosition = -1
+        notifyItemChanged(lastSelected, PAYLOAD_BACKGROUND)
+        viewToShowDetails?.animateWidthChangeWithFading(1, isFading = true)
     }
 }

@@ -1,4 +1,4 @@
-package ircover.idlenation.itemDecorators
+package ircover.idlenation.itemdecorators
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,10 +8,10 @@ import android.support.annotation.ColorRes
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import ircover.idlenation.R
-import ircover.idlenation.library.commonFunctions.getColorFromResource
+import ircover.idlenation.utils.commonFunctions.getColorFromResource
 
 class DividerItemDecorator(context: Context,
-                           @ColorRes textColorResId: Int = R.color.TextCommonColor) : RecyclerView.ItemDecoration() {
+                           @ColorRes textColorResId: Int = R.color.TextCommon) : RecyclerView.ItemDecoration() {
 
     private val dividerPaint = Paint()
     init {
