@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="model"
+            type="ircover.idlenation.game.CountSelectorModel" />
+    </data>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <SeekBar
+            android:id="@+id/sbMain"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/MarginSmall"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/bMinimum"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:progress="@={model.customPercent}"
+            />
+
+        <Button
+            android:id="@+id/bMinimum"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{model.minimumButtonString}"
+            android:gravity="center"
+            android:layout_margin="@dimen/MarginSmall"
+            app:layout_constraintTop_toBottomOf="@+id/sbMain"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/bCustom"
+            android:onClick="@{() -> model.onMinimumButtonClick()}"
+            />
+
+        <Button
+            android:id="@+id/bCustom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{model.customButtonString}"
+            android:gravity="center"
+            android:layout_margin="@dimen/MarginSmall"
+            app:layout_constraintTop_toBottomOf="@+id/sbMain"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/bMinimum"
+            app:layout_constraintRight_toLeftOf="@+id/bMaximum"
+            android:onClick="@{() -> model.onCustomButtonClick()}"
+            />
+
+        <Button
+            android:id="@+id/bMaximum"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{model.maximumButtonString}"
+            android:gravity="center"
+            android:layout_margin="@dimen/MarginSmall"
+            app:layout_constraintTop_toBottomOf="@+id/sbMain"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/bCustom"
+            app:layout_constraintRight_toRightOf="parent"
+            android:onClick="@{() -> model.onMaximumButtonClick()}"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

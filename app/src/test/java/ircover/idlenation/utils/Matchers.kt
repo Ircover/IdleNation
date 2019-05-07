@@ -65,4 +65,4 @@ infix fun Apfloat.plusOrMinus(tolerance: Apfloat) = object : Matcher<Apfloat> {
 private fun Apfloat.equalsPlusOrMinus(actual: Apfloat, tolerance: Double): Boolean =
         equalsPlusOrMinus(actual, Apfloat(tolerance))
 private fun Apfloat.equalsPlusOrMinus(actual: Apfloat, tolerance: Apfloat): Boolean =
-        ApfloatMath.abs(this - actual) < tolerance
+        ApfloatMath.abs(this - actual) <= tolerance

@@ -1,4 +1,4 @@
-package ircover.idlenation
+package ircover.idlenation.modeltests
 
 import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.singleton
@@ -40,6 +40,6 @@ class MainViewModelTest {
         }
         jobsList.forEach { it.await() }
 
-        verify(model, times(1)).calculateProduce()
+        verify(model, only()).calculateProduce()
     }
 }
