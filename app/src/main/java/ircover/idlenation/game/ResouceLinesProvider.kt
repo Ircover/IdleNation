@@ -2,13 +2,15 @@ package ircover.idlenation.game
 
 import ircover.idlenation.*
 import ircover.idlenation.utils.IdleNationApplication
+import ircover.idlenation.utils.getBonusWorker
 
-class ResourceLinesProvider {
-    companion object {
-        val ResourceLines: Array<ResourceLine> get() = arrayOf(
-                FoodLine()
-        )
-    }
+interface ResourceLinesProvider {
+    val resourceLines: Array<ResourceLine>
+}
+class ResourceLinesProviderImpl : ResourceLinesProvider {
+    override val resourceLines: Array<ResourceLine> get() = arrayOf(
+            FoodLine()
+    )
 }
 
 class FoodLine : ResourceChain(ResourceType.Food) {
@@ -17,17 +19,17 @@ class FoodLine : ResourceChain(ResourceType.Food) {
                     IdleNationApplication.getString(R.string.work_place_food_1),
                     resourceType,
                     baseProductionPerSecond = createApfloat(1.0),
-                    bonuses = BonusWorker.Instance),
+                    bonuses = getBonusWorker()),
             WorkPlace(2,
                     IdleNationApplication.getString(R.string.work_place_food_2),
                     resourceType,
                     baseProductionPerSecond = createApfloat(1.0),
-                    bonuses = BonusWorker.Instance),
+                    bonuses = getBonusWorker()),
             WorkPlace(3,
                     IdleNationApplication.getString(R.string.work_place_food_3),
                     resourceType,
                     baseProductionPerSecond = createApfloat(1.0),
-                    bonuses = BonusWorker.Instance)
+                    bonuses = getBonusWorker())
                 .apply { addCount(createApfloat(10.0)) }
     )
 

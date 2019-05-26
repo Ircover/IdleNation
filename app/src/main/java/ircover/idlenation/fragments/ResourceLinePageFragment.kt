@@ -28,13 +28,16 @@ abstract class ResourceLinePageFragment : BaseFragment<FragmentResourceLinePageB
     override fun linkBindingWithModel() {
         binding?.resourceLineModel = model
     }
+}
 
-    companion object {
-        fun createByType(resourceType: ResourceType): ResourceLinePageFragment =
-                when(resourceType) {
-                    ResourceType.Food -> FoodLinePageFragment()
-                }
-    }
+interface ResourceLinePageFragmentFactory {
+    fun createFragmentByType(resourceType: ResourceType): ResourceLinePageFragment
+}
+class ResourceLinePageFragmentFactoryImpl : ResourceLinePageFragmentFactory {
+    override fun createFragmentByType(resourceType: ResourceType): ResourceLinePageFragment =
+            when(resourceType) {
+                ResourceType.Food -> FoodLinePageFragment()
+            }
 }
 
 class FoodLinePageFragment : ResourceLinePageFragment() {

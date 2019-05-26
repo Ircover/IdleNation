@@ -6,6 +6,7 @@ import ircover.idlenation.fragments.ResourceLinePageFragment
 import ircover.idlenation.game.ResourceLine
 import ircover.idlenation.game.registerCountChangeListener
 import ircover.idlenation.utils.Disposable
+import ircover.idlenation.utils.getResourceLinePageFragmentFactory
 
 interface MainActivityPage {
     fun getTitle(): CharSequence
@@ -21,7 +22,7 @@ fun ResourceLine.convertToPage() = object : MainActivityPage {
             "${resourceType.getTitle()}: ${resourceCount.toCommonString()}"
 
     override fun createFragment(): ResourceLinePageFragment{
-        return ResourceLinePageFragment.createByType(resourceType).apply {
+        return getResourceLinePageFragmentFactory().createFragmentByType(resourceType).apply {
             fragment = this
         }
     }

@@ -13,11 +13,12 @@ import ircover.idlenation.utils.BaseViewModel
 import ircover.idlenation.utils.CalculatingObservableField
 import ircover.idlenation.utils.TabLayoutTitleProcessor
 import ircover.idlenation.utils.commonFunctions.getLayoutInflater
+import ircover.idlenation.utils.getResourceLinesProvider
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
 open class MainActivityModel {
-    val resourceLines: Array<ResourceLine> = ResourceLinesProvider.ResourceLines
+    val resourceLines: Array<ResourceLine> = getResourceLinesProvider().resourceLines
     var lastProducedMillis: Long? = null
     open fun calculateProduce() {
         val now = System.currentTimeMillis()
