@@ -27,7 +27,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             viewModel.notifyPagesViewed()
         }
         viewModel.uiTimerData.observe {
-            viewModel.calculateProduce().start()
+            viewModel.calculateProduceAsync().start()
         }
     }
 }

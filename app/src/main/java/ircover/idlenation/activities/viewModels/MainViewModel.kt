@@ -1,6 +1,7 @@
 package ircover.idlenation.activities.viewModels
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import android.databinding.DataBindingUtil
 import android.support.design.widget.TabLayout
@@ -14,8 +15,7 @@ import ircover.idlenation.utils.CalculatingObservableField
 import ircover.idlenation.utils.TabLayoutTitleProcessor
 import ircover.idlenation.utils.commonFunctions.getLayoutInflater
 import ircover.idlenation.utils.getResourceLinesProvider
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 
 open class MainActivityModel {
     val resourceLines: Array<ResourceLine> = getResourceLinesProvider().resourceLines
@@ -29,11 +29,11 @@ open class MainActivityModel {
     }
 }
 
-class MainViewModel(mainActivityModel: MainActivityModel) : BaseViewModel<MainActivityModel>() {
+class MainViewModel(mainActivityModel: MainActivityModel) : BaseViewModel<MainActivityModel>(mainActivityModel) {
     @Suppress("unused")
     constructor() : this(MainActivityModel())
-    val resourceLinesData: LiveData<Array<ResourceLine>> = Transformations.map(liveData) {
-        it.resourceLines
+    val resourceLinesData = MutableLiveData<Array<ResourceLine>>().apply {
+        value = model.resourceLines
     }
     val tabProcessor = CalculatingObservableField<TabLayoutTitleProcessor> {
         object : TabLayoutTitleProcessor {
@@ -51,20 +51,15 @@ class MainViewModel(mainActivityModel: MainActivityModel) : BaseViewModel<MainAc
             Transformations.map(resourceLinesData) { resourceLines ->
                 resourceLines.map { it.convertToPage() }
             }
-    init {
-        setValue(mainActivityModel)
-    }
     private var isCalculating = false
 
-    fun calculateProduce() = GlobalScope.async {
+    fun calculateProduceAsync() = GlobalScope.async {
         if(!isCalculating) {
-            synchronized(this@MainViewModel) {
-                if(!isCalculating) {
-                    isCalculating = true
-                    getValue()?.calculateProduce()
-                    isCalculating = false
-                }
+            isCalculating = true
+            withContext(Dispatchers.IO) {
+                model.calculateProduce()
             }
+            isCalculating = false
         }
     }
 

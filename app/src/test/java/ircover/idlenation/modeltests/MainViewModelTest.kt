@@ -36,7 +36,7 @@ class MainViewModelTest {
         val jobsList: ArrayList<Deferred<Unit>> = arrayListOf()
 
         for (i in 0..2) {
-            jobsList.add(viewModel.calculateProduce())
+            jobsList.add(viewModel.calculateProduceAsync())
         }
         jobsList.forEach { it.await() }
 
