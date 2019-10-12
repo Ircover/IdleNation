@@ -10,16 +10,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{model.title}"
+            android:layout_margin="@dimen/MarginSmall"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/sbMain"/>
+
         <SeekBar
             android:id="@+id/sbMain"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/MarginSmall"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
             app:layout_constraintBottom_toTopOf="@+id/bMinimum"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:progress="@={model.customPercent}"
+            android:max="@{model.progressMax}"
             />
 
         <Button
@@ -42,12 +54,14 @@
             android:layout_height="wrap_content"
             android:text="@{model.customButtonString}"
             android:gravity="center"
-            android:layout_margin="@dimen/MarginSmall"
+            android:layout_marginStart="@dimen/MarginSmall"
+            android:layout_marginEnd="@dimen/MarginSmall"
             app:layout_constraintTop_toBottomOf="@+id/sbMain"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/bMinimum"
             app:layout_constraintRight_toLeftOf="@+id/bMaximum"
             android:onClick="@{() -> model.onCustomButtonClick()}"
+            android:visibility="@{model.customButtonVisibility}"
             />
 
         <Button
@@ -56,7 +70,8 @@
             android:layout_height="wrap_content"
             android:text="@{model.maximumButtonString}"
             android:gravity="center"
-            android:layout_margin="@dimen/MarginSmall"
+            android:layout_marginStart="@dimen/MarginSmall"
+            android:layout_marginEnd="@dimen/MarginSmall"
             app:layout_constraintTop_toBottomOf="@+id/sbMain"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/bCustom"

@@ -6,21 +6,30 @@ import android.view.ViewGroup
 import ircover.idlenation.R
 import ircover.idlenation.databinding.ListElementWorkPlaceBinding
 import ircover.idlenation.game.CountChangeObservable
+import ircover.idlenation.game.CountSelectorModel
+import ircover.idlenation.game.notifyCountChangeListeners
 import ircover.idlenation.game.registerCountChangeListener
 import ircover.idlenation.utils.BindingViewHolder
 import ircover.idlenation.toCommonString
 import ircover.idlenation.utils.Disposable
+import ircover.idlenation.utils.IdleNationApplication
 import org.apfloat.Apfloat
 
 class WorkPlaceModel(val name: String,
-                     startCount: Apfloat) {
-    var count: Apfloat = startCount
+                     startCount: Apfloat) : CountChangeObservable {
+    override var count: Apfloat = startCount
         set(value) {
             field = value
             countString.notifyChange()
+            notifyCountChangeListeners()
         }
+    override val countChangeObservers: ArrayList<(Apfloat) -> Unit> = arrayListOf()
     val countString = object : ObservableField<String>() {
         override fun get() = count.toCommonString()
+    }
+    val sacrificeSelector = CountSelectorModel(IdleNationApplication.getString(R.string.sacrifice),
+            this) { selectedCount ->
+
     }
     private var listenerDisposable: Disposable? = null
 

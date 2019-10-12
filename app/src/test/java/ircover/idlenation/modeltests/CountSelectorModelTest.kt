@@ -39,8 +39,8 @@ class CountSelectorModelTest {
     @ParameterizedTest(name = "Для количества {0} и прогресса {1} должен вернуть {2}")
     @CsvSource(
             "0.0, 50, 0.0",
-            //"1.0, 50, 1.0",
-            "5000.0, 50, 2500.0")
+            "1.0, 50, 1.0",
+            "5000.0, 49, 2500.0")
     fun customClick_CalledListener(count: Double, percent: Int, expectedDoubleValue: Double) {
         assertModelButtonClickResult(count, expectedDoubleValue) {
             customPercent = percent
@@ -69,7 +69,7 @@ class CountSelectorModelTest {
             createModel(createCountChangeObservable(count), countSelectListener)
     private fun createModel(countChangeObservable: CountChangeObservable,
                             countSelectListener: ((Apfloat) -> Unit)? = null) =
-            CountSelectorModel(countChangeObservable,
+            CountSelectorModel("test", countChangeObservable,
                     countSelectListener ?: { })
     private fun createCountChangeObservable(count: Apfloat) = object : CountChangeObservable {
         override val countChangeObservers: ArrayList<(Apfloat) -> Unit> =
