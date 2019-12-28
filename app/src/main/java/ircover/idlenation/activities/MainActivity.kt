@@ -7,10 +7,9 @@ import ircover.idlenation.adapters.MainActivityPagerAdapter
 import ircover.idlenation.databinding.ActivityMainBinding
 import ircover.idlenation.utils.BaseActivity
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main) {
     override val viewModelClass = MainViewModel::class.java
 
-    override val contentResId get() = R.layout.activity_main
     private lateinit var pagerAdapter: MainActivityPagerAdapter
 
     override fun initBinding(binding: ActivityMainBinding) {
@@ -26,8 +25,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             pagerAdapter.pages = menuPages
             viewModel.notifyPagesViewed()
         }
-        viewModel.uiTimerData.observe {
-            viewModel.calculateProduceAsync().start()
-        }
+        viewModel.startCalculateProducing(this)
     }
 }

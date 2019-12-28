@@ -1,7 +1,9 @@
 package ircover.idlenation.activities.viewModels
 
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.Transformations
 import android.databinding.DataBindingUtil
 import android.support.design.widget.TabLayout
@@ -70,5 +72,11 @@ class MainViewModel(mainActivityModel: MainActivityModel) : BaseViewModel<MainAc
 
     fun notifyPagesViewed() {
         tabProcessor.notifyChange()
+    }
+
+    fun startCalculateProducing(lifecycleOwner: LifecycleOwner) {
+        uiTimerData.observe(lifecycleOwner, Observer {
+            calculateProduceAsync().start()
+        })
     }
 }

@@ -7,9 +7,8 @@ import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 
-abstract class BaseActivity<TBinding : ViewDataBinding, TModel : BaseViewModel<*>> :
+abstract class BaseActivity<TBinding : ViewDataBinding, TModel : BaseViewModel<*>>(contentResId: Int) :
         AppCompatActivity() {
-    abstract val contentResId: Int
     abstract val viewModelClass: Class<TModel>
     protected val binding: TBinding by ActivityBinding(contentResId)
     protected val viewModel: TModel by lazy { getViewModelFromProvider() }
