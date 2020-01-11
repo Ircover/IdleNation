@@ -1,19 +1,19 @@
 package ircover.idlenation.utils.livedata
 
 import android.arch.lifecycle.MutableLiveData
-import ircover.idlenation.utils.getElapsedRealtime
-import java.util.Timer
-import java.util.TimerTask
+import ircover.idlenation.utils.SystemService
+import java.util.*
 
-class TimerLiveData(private val interval: Long) : MutableLiveData<Long>() {
-    private var lastRaisedTime = getElapsedRealtime()
+class TimerLiveData(private val interval: Long,
+                    private val systemService: SystemService) : MutableLiveData<Long>() {
+    private var lastRaisedTime = systemService.getElapsedRealtime()
     private var timer: Timer? = null
 
     override fun onActive() {
         timer = Timer().apply {
             schedule(object : TimerTask() {
                 override fun run() {
-                    val currentTime = getElapsedRealtime()
+                    val currentTime = systemService.getElapsedRealtime()
                     postValue(currentTime - lastRaisedTime)
                     lastRaisedTime = currentTime
                 }

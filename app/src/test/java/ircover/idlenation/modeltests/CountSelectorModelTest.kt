@@ -1,14 +1,12 @@
 package ircover.idlenation.modeltests
 
-import com.natpryce.hamkrest.assertion.assertThat
-import ircover.idlenation.createApfloat
+import ircover.idlenation.utils.commonFunctions.createApfloat
 import ircover.idlenation.game.CountChangeObservable
 import ircover.idlenation.game.CountSelectorModel
 import ircover.idlenation.utils.Is
 import ircover.idlenation.utils.assertThat
 import ircover.idlenation.utils.nearlyEqualTo
 import org.apfloat.Apfloat
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 

@@ -1,9 +1,8 @@
 package ircover.idlenation.game
 
-import ircover.idlenation.createApfloat
-import ircover.idlenation.toCommonString
+import ircover.idlenation.utils.commonFunctions.createApfloat
 import ircover.idlenation.utils.CalculatingObservableField
-import ircover.idlenation.utils.commonFunctions.compareTo
+import ircover.idlenation.utils.Printer
 import ircover.idlenation.utils.helpers.toViewVisibility
 import org.apfloat.Apfloat
 
@@ -12,6 +11,7 @@ private const val PERCENT_MAXIMUM = 100
 
 class CountSelectorModel(val title: String,
                          countChangeObservable: CountChangeObservable,
+                         private val printer: Printer,
                          private val countSelectListener: (Apfloat) -> Unit) {
     val progressMax = PERCENT_MAXIMUM - PERCENT_MINIMUM
     var customPercent = 0
@@ -21,9 +21,9 @@ class CountSelectorModel(val title: String,
             customButtonString.notifyChange()
             customButtonVisibility.notifyChange()
         }
-    val minimumButtonString = CalculatingObservableField { minimumCount.toCommonString() }
-    val customButtonString = CalculatingObservableField { customCount.toCommonString() }
-    val maximumButtonString = CalculatingObservableField { count.toCommonString() }
+    val minimumButtonString = CalculatingObservableField { printer.printApfloat(minimumCount) }
+    val customButtonString = CalculatingObservableField { printer.printApfloat(customCount) }
+    val maximumButtonString = CalculatingObservableField { printer.printApfloat(count) }
     private val minimumCount = createApfloat(1.0)
     var customButtonVisibility = CalculatingObservableField { (customCount != minimumCount).toViewVisibility() }
 

@@ -1,7 +1,8 @@
 package ircover.idlenation.game
 
 import ircover.idlenation.adapters.WorkPlaceModel
-import ircover.idlenation.createApfloat
+import ircover.idlenation.utils.commonFunctions.createApfloat
+import ircover.idlenation.utils.Printer
 import ircover.idlenation.utils.commonFunctions.plus
 import ircover.idlenation.utils.commonFunctions.times
 import org.apfloat.Apfloat
@@ -30,8 +31,8 @@ class WorkPlace(private val id: Int,
         notifyCountChangeListeners()
     }
 
-    fun convertToModel(): WorkPlaceModel =
-            WorkPlaceModel(name, count).also { model ->
+    fun convertToModel(printer: Printer): WorkPlaceModel =
+            WorkPlaceModel(name, count, printer).also { model ->
                 model.registerCountChangeObserver(this)
             }
 }

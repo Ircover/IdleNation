@@ -10,8 +10,10 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.github.salomonbrys.kodein.KodeinAware
 
-abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
+abstract class BaseFragment<T : ViewDataBinding> : Fragment(), KodeinAware {
+    override val kodein = KodeinWorker.kodein
     protected var binding: T? = null
     abstract val layoutResId: Int
 

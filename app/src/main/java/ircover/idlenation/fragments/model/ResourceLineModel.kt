@@ -1,9 +1,10 @@
 package ircover.idlenation.fragments.model
 
 import android.view.View
-import ircover.idlenation.game.ResourceLine
 import ircover.idlenation.adapters.ResourceLineAdapter
 import ircover.idlenation.adapters.WorkPlaceModel
+import ircover.idlenation.game.ResourceLine
+import ircover.idlenation.utils.Printer
 import ircover.idlenation.utils.commonFunctions.animateWidthChangeWithFading
 import ircover.idlenation.utils.commonFunctions.getRealWidth
 
@@ -11,14 +12,14 @@ interface DetailsViewable {
     var viewToShowDetails: View?
 }
 
-class ResourceLineModel : DetailsViewable {
+class ResourceLineModel(private val printer: Printer) : DetailsViewable {
     var onWorkPlaceSelect: ((WorkPlaceModel) -> Unit)? = null
     var resourceLine: ResourceLine? = null
         set(value) {
             field = value
             refreshAdapterItems()
         }
-    override var viewToShowDetails: View? = null
+    override var viewToShowDetails: View? = null //TODO: этому здесь не место
         set(value) {
             field = value
             value?.getRealWidth { width ->
@@ -38,9 +39,9 @@ class ResourceLineModel : DetailsViewable {
     private fun refreshAdapterItems() {
         resourceLine?.let { line ->
             val newItems = line.workPlaces
-                    .map { it.convertToModel() }
+                    .map { it.convertToModel(printer) }
                     .reversed()
-                    .plus(line.createWorkPlaceModel())
+                    .plus(line.createWorkPlaceModel(printer))
                     .toTypedArray()
             adapter.setItems(newItems)
         }

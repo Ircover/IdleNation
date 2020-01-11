@@ -1,13 +1,11 @@
 package ircover.idlenation.utils
 
+import android.arch.lifecycle.ViewModel
 import android.os.SystemClock
-import com.github.salomonbrys.kodein.bind
+import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.conf.ConfigurableKodein
-import com.github.salomonbrys.kodein.instance
-import com.github.salomonbrys.kodein.provider
-import com.github.salomonbrys.kodein.singleton
-import ircover.idlenation.PreferencesManager
-import ircover.idlenation.PreferencesManagerImpl
+import ircover.idlenation.activities.viewModels.MainActivityModel
+import ircover.idlenation.activities.viewModels.MainViewModel
 import ircover.idlenation.fragments.ResourceLinePageFragmentFactory
 import ircover.idlenation.fragments.ResourceLinePageFragmentFactoryImpl
 import ircover.idlenation.game.BonusWorker
@@ -25,20 +23,28 @@ class KodeinWorker {
                 bind<Long>(ELAPSED_REALTIME_TAG) with provider { SystemClock.elapsedRealtime() }
                 bind<PreferencesManager>() with singleton { PreferencesManagerImpl() }
                 bind<BonusWorker>() with singleton { BonusWorkerImpl() }
-                bind<ResourceLinesProvider>() with singleton { ResourceLinesProviderImpl() }
+                bind<ResourceLinesProvider>() with singleton { ResourceLinesProviderImpl(instance()) }
                 bind<ResourceLinePageFragmentFactory>() with singleton { ResourceLinePageFragmentFactoryImpl() }
+                bind<SystemService>() with singleton { SystemServiceImpl() }
+                bind<PagesFactory>() with singleton { PagesFactoryImpl(instance(), instance()) }
+                bind<Printer>() with singleton { PrinterImpl(instance()) }
+                bindViewModels()
             }
         }
+
+        private fun Kodein.Builder.bindViewModels() {
+            bindViewModel<MainViewModel>() with provider {
+                MainViewModel(MainActivityModel(), instance(), instance())
+            }
+        }
+
+        private inline fun <reified T : ViewModel> Kodein.Builder.bindViewModel() =
+                this.bind<ViewModel>(T::class.java)
     }
 }
 
 private inline fun <reified T: Any> kodeinResolve(tag: Any? = null) =
         KodeinWorker.kodein.instance<T>(tag)
 
-fun getElapsedRealtime(): Long = kodeinResolve(ELAPSED_REALTIME_TAG)
-fun getPreferencesManager(): PreferencesManager = kodeinResolve()
-fun getBonusWorker(): BonusWorker = kodeinResolve()
-fun getResourceLinesProvider(): ResourceLinesProvider = kodeinResolve()
-fun getResourceLinePageFragmentFactory(): ResourceLinePageFragmentFactory = kodeinResolve()
 fun runOnUI(action: suspend CoroutineScope.() -> Unit) = GlobalScope.launch(
         kodeinResolve<CoroutineDispatcher>(), CoroutineStart.DEFAULT, action)

@@ -1,6 +1,6 @@
 package ircover.idlenation.game
 
-import ircover.idlenation.createApfloat
+import ircover.idlenation.utils.commonFunctions.createApfloat
 import org.apfloat.Apfloat
 
 interface BonusWorker {

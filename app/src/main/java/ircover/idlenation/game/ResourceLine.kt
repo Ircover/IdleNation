@@ -1,7 +1,8 @@
 package ircover.idlenation.game
 
 import ircover.idlenation.adapters.WorkPlaceModel
-import ircover.idlenation.createApfloat
+import ircover.idlenation.utils.commonFunctions.createApfloat
+import ircover.idlenation.utils.Printer
 import ircover.idlenation.utils.commonFunctions.plus
 import org.apfloat.Apfloat
 
@@ -18,8 +19,8 @@ abstract class ResourceLine(val resourceType: ResourceType): CountChangeObservab
         notifyCountChangeListeners()
     }
 
-    fun createWorkPlaceModel(): WorkPlaceModel =
-            WorkPlaceModel(resourceType.getTitle(), resourceCount).also { model ->
+    fun createWorkPlaceModel(printer: Printer): WorkPlaceModel =
+            WorkPlaceModel(resourceType.getTitle(), resourceCount, printer).also { model ->
                 model.registerCountChangeObserver(this)
             }
 }

@@ -2,7 +2,7 @@ package ircover.idlenation.utils
 
 import com.natpryce.hamkrest.MatchResult
 import com.natpryce.hamkrest.Matcher
-import ircover.idlenation.createApfloat
+import ircover.idlenation.utils.commonFunctions.createApfloat
 import ircover.idlenation.utils.commonFunctions.minus
 import ircover.idlenation.utils.commonFunctions.times
 import org.apfloat.Apfloat

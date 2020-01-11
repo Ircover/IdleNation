@@ -1,42 +1,42 @@
 package ircover.idlenation.activities.viewModels
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.Transformations
+import android.arch.lifecycle.*
 import android.databinding.DataBindingUtil
 import android.support.design.widget.TabLayout
-import ircover.idlenation.*
+import ircover.idlenation.MainActivityPage
+import ircover.idlenation.R
 import ircover.idlenation.databinding.ViewPageTitleBinding
 import ircover.idlenation.game.ResourceLine
 import ircover.idlenation.game.ResourceLinesProvider
 import ircover.idlenation.game.ResourceType
 import ircover.idlenation.utils.BaseViewModel
 import ircover.idlenation.utils.CalculatingObservableField
+import ircover.idlenation.utils.PagesFactory
 import ircover.idlenation.utils.TabLayoutTitleProcessor
 import ircover.idlenation.utils.commonFunctions.getLayoutInflater
-import ircover.idlenation.utils.getResourceLinesProvider
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 
 open class MainActivityModel {
-    val resourceLines: Array<ResourceLine> = getResourceLinesProvider().resourceLines
-    var lastProducedMillis: Long? = null
-    open fun calculateProduce() {
-        val now = System.currentTimeMillis()
+    lateinit var resourceLines: Array<ResourceLine>
+    private var lastProducedMillis: Long? = null
+    open fun calculateProduce(currentTimeMillis: Long) {
         lastProducedMillis?.let { last ->
-            resourceLines.forEach { it.produce(now - last) }
+            resourceLines.forEach { it.produce(currentTimeMillis - last) }
         }
-        lastProducedMillis = now
+        lastProducedMillis = currentTimeMillis
     }
 }
 
-class MainViewModel(mainActivityModel: MainActivityModel) : BaseViewModel<MainActivityModel>(mainActivityModel) {
-    @Suppress("unused")
-    constructor() : this(MainActivityModel())
-    val resourceLinesData = MutableLiveData<Array<ResourceLine>>().apply {
-        value = model.resourceLines
+class MainViewModel(mainActivityModel: MainActivityModel,
+                    resourceLinesProvider: ResourceLinesProvider,
+                    private val pagesFactory: PagesFactory) : BaseViewModel<MainActivityModel>(mainActivityModel) {
+    init {
+        model.resourceLines = resourceLinesProvider.resourceLines
     }
+
     val tabProcessor = CalculatingObservableField<TabLayoutTitleProcessor> {
         object : TabLayoutTitleProcessor {
             override fun process(parent: TabLayout, tab: TabLayout.Tab, position: Int) {
@@ -49,9 +49,12 @@ class MainViewModel(mainActivityModel: MainActivityModel) : BaseViewModel<MainAc
             }
         }
     }
+    private val resourceLinesData = MutableLiveData<Array<ResourceLine>>().apply {
+        value = model.resourceLines
+    }
     val menuPages: LiveData<List<MainActivityPage>> =
             Transformations.map(resourceLinesData) { resourceLines ->
-                resourceLines.map { it.convertToPage() }
+                resourceLines.map { pagesFactory.getMainActivityPage(it) }
             }
     private var isCalculating = false
 
@@ -59,15 +62,15 @@ class MainViewModel(mainActivityModel: MainActivityModel) : BaseViewModel<MainAc
         if(!isCalculating) {
             isCalculating = true
             withContext(Dispatchers.IO) {
-                model.calculateProduce()
+                model.calculateProduce(systemService.getCurrentTimeMillis())
             }
             isCalculating = false
         }
     }
 
     fun findResourceLine(resourceType: ResourceType): LiveData<ResourceLine>
-            = Transformations.map(resourceLinesData) {
-                it.find { it.resourceType == resourceType }
+            = Transformations.map(resourceLinesData) { resourceLines ->
+                resourceLines.find { it.resourceType == resourceType }
             }
 
     fun notifyPagesViewed() {

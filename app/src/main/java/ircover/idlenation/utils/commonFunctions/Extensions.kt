@@ -1,6 +1,5 @@
 package ircover.idlenation.utils.commonFunctions
 
-import ircover.idlenation.COMMON_PRECISION
 import org.apfloat.Apfloat
 
 operator fun Apfloat.plus(a: Apfloat): Apfloat = add(a)

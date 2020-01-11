@@ -6,10 +6,13 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.github.salomonbrys.kodein.KodeinAware
+import com.github.salomonbrys.kodein.instance
 
 abstract class BaseActivity<TBinding : ViewDataBinding, TModel : BaseViewModel<*>>(contentResId: Int) :
-        AppCompatActivity() {
+        AppCompatActivity(), KodeinAware {
     abstract val viewModelClass: Class<TModel>
+    override val kodein = KodeinWorker.kodein
     protected val binding: TBinding by ActivityBinding(contentResId)
     protected val viewModel: TModel by lazy { getViewModelFromProvider() }
 
@@ -19,7 +22,9 @@ abstract class BaseActivity<TBinding : ViewDataBinding, TModel : BaseViewModel<*
     }
 
     private fun getViewModelFromProvider(): TModel =
-            ViewModelProviders.of(this).get(viewModelClass)
+            ViewModelProviders.of(this, ViewModelFactory(kodein)).get(viewModelClass).apply {
+                systemService = kodein.instance()
+            }
 
     abstract fun initBinding(binding: TBinding)
 

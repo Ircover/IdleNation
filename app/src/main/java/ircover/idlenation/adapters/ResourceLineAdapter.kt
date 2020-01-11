@@ -10,13 +10,14 @@ import ircover.idlenation.game.CountSelectorModel
 import ircover.idlenation.game.notifyCountChangeListeners
 import ircover.idlenation.game.registerCountChangeListener
 import ircover.idlenation.utils.BindingViewHolder
-import ircover.idlenation.toCommonString
 import ircover.idlenation.utils.Disposable
 import ircover.idlenation.utils.IdleNationApplication
+import ircover.idlenation.utils.Printer
 import org.apfloat.Apfloat
 
 class WorkPlaceModel(val name: String,
-                     startCount: Apfloat) : CountChangeObservable {
+                     startCount: Apfloat,
+                     private val printer: Printer) : CountChangeObservable {
     override var count: Apfloat = startCount
         set(value) {
             field = value
@@ -25,10 +26,10 @@ class WorkPlaceModel(val name: String,
         }
     override val countChangeObservers: ArrayList<(Apfloat) -> Unit> = arrayListOf()
     val countString = object : ObservableField<String>() {
-        override fun get() = count.toCommonString()
+        override fun get() = printer.printApfloat(count)
     }
     val sacrificeSelector = CountSelectorModel(IdleNationApplication.getString(R.string.sacrifice),
-            this) { selectedCount ->
+            this, printer) { selectedCount ->
 
     }
     private var listenerDisposable: Disposable? = null

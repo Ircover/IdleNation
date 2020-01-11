@@ -3,19 +3,22 @@ package ircover.idlenation.adapters
 import android.databinding.ObservableField
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
-import ircover.idlenation.*
+import ircover.idlenation.MainActivityPage
 import ircover.idlenation.game.ResourceType
 import ircover.idlenation.utils.BaseActivity
+import ircover.idlenation.utils.Printer
 import org.apfloat.Apfloat
 
-class PageTitleModel(startCount: Apfloat, resourceType: ResourceType) {
+class PageTitleModel(startCount: Apfloat,
+                     resourceType: ResourceType,
+                     private val printer: Printer) {
     var count: Apfloat = startCount
     set(value) {
         field = value
         countString.notifyChange()
     }
     val countString = object : ObservableField<String>() {
-        override fun get() = count.toCommonString()
+        override fun get() = printer.printApfloat(count)
     }
 
     val iconResource = resourceType.getIconResourceId()

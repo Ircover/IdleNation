@@ -6,6 +6,7 @@ import ircover.idlenation.game.ResourceChain
 import ircover.idlenation.game.ResourceType
 import ircover.idlenation.game.WorkPlace
 import ircover.idlenation.utils.Is
+import ircover.idlenation.utils.commonFunctions.createApfloat
 import ircover.idlenation.utils.equalTo
 import ircover.idlenation.utils.nearlyEqualTo
 import org.junit.jupiter.api.BeforeEach

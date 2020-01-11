@@ -1,7 +1,6 @@
-package ircover.idlenation
+package ircover.idlenation.utils
 
-import ircover.idlenation.utils.getPreferencesManager
-import org.apfloat.Apfloat
+import ircover.idlenation.utils.commonFunctions.NumberFormat
 
 interface PreferencesManager {
     fun getNumberFormat(): NumberFormat
@@ -12,5 +11,3 @@ class PreferencesManagerImpl : PreferencesManager {
         return NumberFormat.Scientific
     }
 }
-
-fun Apfloat.toCommonString() = toString(getPreferencesManager().getNumberFormat())
