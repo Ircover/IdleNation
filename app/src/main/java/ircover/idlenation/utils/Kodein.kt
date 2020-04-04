@@ -34,7 +34,11 @@ class KodeinWorker {
 
         private fun Kodein.Builder.bindViewModels() {
             bindViewModel<MainViewModel>() with provider {
-                MainViewModel(MainActivityModel(), instance(), instance())
+                MainViewModel(MainActivityModel(),
+                        instance<ResourceLinesProvider>().resourceLines,
+                        instance(),
+                        instance(),
+                        Dispatchers.Main)
             }
         }
 

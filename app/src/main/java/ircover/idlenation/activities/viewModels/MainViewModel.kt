@@ -7,17 +7,13 @@ import ircover.idlenation.MainActivityPage
 import ircover.idlenation.R
 import ircover.idlenation.databinding.ViewPageTitleBinding
 import ircover.idlenation.game.ResourceLine
-import ircover.idlenation.game.ResourceLinesProvider
 import ircover.idlenation.game.ResourceType
-import ircover.idlenation.utils.BaseViewModel
-import ircover.idlenation.utils.CalculatingObservableField
-import ircover.idlenation.utils.PagesFactory
-import ircover.idlenation.utils.TabLayoutTitleProcessor
+import ircover.idlenation.utils.*
 import ircover.idlenation.utils.commonFunctions.getLayoutInflater
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 open class MainActivityModel {
     lateinit var resourceLines: Array<ResourceLine>
@@ -31,10 +27,13 @@ open class MainActivityModel {
 }
 
 class MainViewModel(mainActivityModel: MainActivityModel,
-                    resourceLinesProvider: ResourceLinesProvider,
-                    private val pagesFactory: PagesFactory) : BaseViewModel<MainActivityModel>(mainActivityModel) {
+                    resourceLines: Array<ResourceLine>,
+                    private val pagesFactory: PagesFactory,
+                    systemService: SystemService,
+                    coroutineContext: CoroutineContext)
+        : BaseViewModel<MainActivityModel>(mainActivityModel, systemService, coroutineContext) {
     init {
-        model.resourceLines = resourceLinesProvider.resourceLines
+        model.resourceLines = resourceLines
     }
 
     val tabProcessor = CalculatingObservableField<TabLayoutTitleProcessor> {
@@ -58,7 +57,7 @@ class MainViewModel(mainActivityModel: MainActivityModel,
             }
     private var isCalculating = false
 
-    fun calculateProduceAsync() = GlobalScope.async {
+    fun calculateProduceAsync() = scope.launch {
         if(!isCalculating) {
             isCalculating = true
             withContext(Dispatchers.IO) {
@@ -79,7 +78,7 @@ class MainViewModel(mainActivityModel: MainActivityModel,
 
     fun startCalculateProducing(lifecycleOwner: LifecycleOwner) {
         uiTimerData.observe(lifecycleOwner, Observer {
-            calculateProduceAsync().start()
+            calculateProduceAsync()
         })
     }
 }

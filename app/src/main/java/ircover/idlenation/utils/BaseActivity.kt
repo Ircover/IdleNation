@@ -7,7 +7,6 @@ import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.github.salomonbrys.kodein.KodeinAware
-import com.github.salomonbrys.kodein.instance
 
 abstract class BaseActivity<TBinding : ViewDataBinding, TModel : BaseViewModel<*>>(contentResId: Int) :
         AppCompatActivity(), KodeinAware {
@@ -22,9 +21,7 @@ abstract class BaseActivity<TBinding : ViewDataBinding, TModel : BaseViewModel<*
     }
 
     private fun getViewModelFromProvider(): TModel =
-            ViewModelProviders.of(this, ViewModelFactory(kodein)).get(viewModelClass).apply {
-                systemService = kodein.instance()
-            }
+            ViewModelProviders.of(this, ViewModelFactory(kodein)).get(viewModelClass)
 
     abstract fun initBinding(binding: TBinding)
 

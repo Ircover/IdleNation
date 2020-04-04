@@ -1,45 +1,33 @@
 package ircover.idlenation.modeltests
 
-import com.github.salomonbrys.kodein.bind
-import com.github.salomonbrys.kodein.singleton
 import ircover.idlenation.activities.viewModels.MainActivityModel
 import ircover.idlenation.activities.viewModels.MainViewModel
-import ircover.idlenation.utils.ELAPSED_REALTIME_TAG
+import ircover.idlenation.utils.InstantTaskExecutorExtension
+import ircover.idlenation.utils.SystemServiceImpl
+import ircover.idlenation.utils.mock
+import kotlinx.coroutines.test.TestCoroutineContext
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.*
-import ircover.idlenation.utils.InstantTaskExecutorExtension
-import ircover.idlenation.utils.KodeinWorker
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers.anyLong
+import org.mockito.Mockito.*
 
 @ExtendWith(InstantTaskExecutorExtension::class)
 class MainViewModelTest {
-
-    @BeforeEach
-    fun setup() {
-        KodeinWorker.kodein.addConfig {
-            bind<Long>(ELAPSED_REALTIME_TAG, overrides = true) with singleton {
-                System.currentTimeMillis()
-            }
-        }
-    }
+    val testContext = TestCoroutineContext()
 
     @Test
     @DisplayName("Отбрасывание ненужных вычислений")
-    fun threeTimesCalledHeavyProduce_CalculatesOnce() = runBlocking {
+    fun threeTimesCalledHeavyProduce_CalculatesOnce() {
         val model = mock(MainActivityModel::class.java)
-        val viewModel = MainViewModel(model)
-        `when`(model.calculateProduce()).then { Thread.sleep(100) }
-        val jobsList: ArrayList<Deferred<Unit>> = arrayListOf()
+        val viewModel = MainViewModel(model, arrayOf(), mock(), SystemServiceImpl(), testContext)
+        `when`(model.calculateProduce(anyLong())).then { Thread.sleep(100) }
 
         for (i in 0..2) {
-            jobsList.add(viewModel.calculateProduceAsync())
+            viewModel.calculateProduceAsync()
         }
-        jobsList.forEach { it.await() }
+        testContext.triggerActions()
 
-        verify(model, only()).calculateProduce()
+        verify(model, only()).calculateProduce(anyLong())
     }
 }

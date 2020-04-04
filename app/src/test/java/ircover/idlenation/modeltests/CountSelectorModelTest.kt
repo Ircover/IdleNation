@@ -1,10 +1,11 @@
 package ircover.idlenation.modeltests
 
-import ircover.idlenation.utils.commonFunctions.createApfloat
 import ircover.idlenation.game.CountChangeObservable
 import ircover.idlenation.game.CountSelectorModel
 import ircover.idlenation.utils.Is
 import ircover.idlenation.utils.assertThat
+import ircover.idlenation.utils.commonFunctions.createApfloat
+import ircover.idlenation.utils.mock
 import ircover.idlenation.utils.nearlyEqualTo
 import org.apfloat.Apfloat
 import org.junit.jupiter.params.ParameterizedTest
@@ -67,7 +68,7 @@ class CountSelectorModelTest {
             createModel(createCountChangeObservable(count), countSelectListener)
     private fun createModel(countChangeObservable: CountChangeObservable,
                             countSelectListener: ((Apfloat) -> Unit)? = null) =
-            CountSelectorModel("test", countChangeObservable,
+            CountSelectorModel("test", countChangeObservable, mock(),
                     countSelectListener ?: { })
     private fun createCountChangeObservable(count: Apfloat) = object : CountChangeObservable {
         override val countChangeObservers: ArrayList<(Apfloat) -> Unit> =
